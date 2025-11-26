@@ -8,7 +8,8 @@ spring:
     config:
       server:
         git:
-          uri: file:///Users/andy/Desktop/micro-curso/config-data
+          uri: file:///Users/andy/Desktop/micro-curso/config-server
+      
           default-label: main
 
   security:
