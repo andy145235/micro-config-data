@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: m-cursos
+  
+  # === BASE DE DATOS ===
+  datasource:
+    # Usa el nombre del contenedor que definimos en docker-compose (postgres_cursos)
+    url: jdbc:postgresql://postgres_cursos:5432/Curso-db
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  # === SEGURIDAD RESOURCE SERVER (Validación) ===
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # URL interna para validar que el token de Keycloak es real
+          issuer-uri: http://keycloak:8080/realms/DemoUCB
+          jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
+
+# Configuración Swagger/OpenAPI
+springdoc:
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+  api-docs:
+    path: /openapi/v3/api-docs
