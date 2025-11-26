@@ -1,33 +1,18 @@
-server:
-  port: 8888
-
-spring:
-  application:
-    name: config-server
-  cloud:
-    config:
-      server:
-        git:
-          uri: file:///Users/andy/Desktop/micro-curso/config-server
-      
-          default-label: main
-
-  security:
-    user:
-      name: user
-      password: password123
-
+# Configuración base para todos los microservicios
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-      
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # IMPORTANTE: Usamos 'keycloak' (nombre del contenedor) y puerto 8080 (interno)
-          # porque se comunican dentro de la red de Docker.
-          issuer-uri: http://keycloak:8080/realms/DemoUCB
-          jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
+      # Todos buscan a Eureka por su nombre de contenedor en la red Docker
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Configuración de Actuator (Para ver si están vivos)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
