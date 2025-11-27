@@ -5,13 +5,13 @@ spring:
   application:
     name: gateway
   
-# --- CORRECCIÓN: 'security' debe tener 2 espacios, DENTRO de 'spring' ---
+  # --- ¡ESTO ES LO IMPORTANTE! (2 espacios) ---
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            # Usamos configuración manual (Lazy)
+            # Configuración manual para evitar errores de inicio
             authorization-uri: http://localhost:8080/realms/DemoUCB/protocol/openid-connect/auth
             token-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/token
             user-info-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/userinfo
@@ -21,8 +21,7 @@ spring:
           gateway-client:
             provider: keycloak
             client-id: gateway-client
-            # TU SECRETO (Verifica que sea el correcto)
-            client-secret: 5wZP476YqDhfwQlOcaY0H2mdC8aqDDSG 
+            client-secret: TU_SECRETO_AQUI
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid
