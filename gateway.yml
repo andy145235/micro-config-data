@@ -21,7 +21,7 @@ spring:
           gateway-client:
             provider: keycloak
             client-id: gateway-client
-            client-secret: RH10YM4OoWUUb3kqtlpzZkRArWOCu18l
+            client-secret: mmvbH3SUYERNi8GWd04QwieL4GHIPZLB
             # AGREGAR ESTA LÍNEA:
             client-authentication-method: client_secret_post 
             authorization-grant-type: authorization_code
