@@ -5,7 +5,7 @@ spring:
   application:
     name: gateway
   
-  # --- ¡ESTO ES LO IMPORTANTE! (2 espacios) ---
+
   security:
     oauth2:
       client:
@@ -26,7 +26,6 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid
 
-  # === RUTAS Y FILTROS ===
   cloud:
     gateway:
       discovery:
