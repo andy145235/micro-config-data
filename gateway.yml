@@ -14,7 +14,7 @@ spring:
             # Configuración manual para evitar errores de inicio
             authorization-uri: http://localhost:8080/realms/DemoUCB/protocol/openid-connect/auth
             token-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/token
-            user-info-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/userinfo
+          
             jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
             user-name-attribute: preferred_username
         registration:
