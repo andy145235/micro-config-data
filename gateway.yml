@@ -7,6 +7,12 @@ spring:
   
   security:
     oauth2:
+      resourceserver:
+          jwt:
+            # 1. URL para validar la firma (coincide con el token de Angular)
+            issuer-uri: http://localhost:8080/realms/DemoUCB
+          # 2. URL interna para que Docker busque las llaves
+            jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
       client:
         provider:
           keycloak:
