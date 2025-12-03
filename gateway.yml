@@ -5,25 +5,25 @@ spring:
   application:
     name: gateway
   
-
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            # Configuración manual para evitar errores de inicio
+            # URL para que tu NAVEGADOR te redirija al login
             authorization-uri: http://localhost:8080/realms/DemoUCB/protocol/openid-connect/auth
+            # URLs para que DOCKER se comunique internamente
             token-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/token
-          
             jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
             user-name-attribute: preferred_username
         registration:
           gateway-client:
             provider: keycloak
             client-id: gateway-client
+            # Tu secreto actual
             client-secret: mmvbH3SUYERNi8GWd04QwieL4GHIPZLB
-            # AGREGAR ESTA LÍNEA:
-            client-authentication-method: client_secret_post 
+            # ESTA LÍNEA ES LA MAGIA PARA QUE NO DE "INVALID CREDENTIALS":
+            client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid
@@ -35,6 +35,20 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        # Ruta para M-CURSOS
+        - id: m-cursos
+          uri: lb://M-CURSOS
+          predicates:
+            - Path=/cursos/**
+        
+        # Ruta para M-CURSOS Swagger
+        - id: m-cursos-swagger
+          uri: lb://M-CURSOS
+          predicates:
+            - Path=/m-cursos/openapi/**
+          filters:
+            - StripPrefix=1
+            
         # Ruta para MS-RES
         - id: ms-res
           uri: lb://MS-RES
@@ -51,22 +65,7 @@ spring:
           filters:
             - StripPrefix=1
 
-        # Ruta para M-CURSOS
-        - id: m-cursos
-          uri: lb://M-CURSOS
-          predicates:
-            - Path=/cursos/**
-          # filters: StripPrefix=1 (Descomenta si tu controller no tiene /cursos)
-
-        # Ruta para M-CURSOS Swagger
-        - id: m-cursos-swagger
-          uri: lb://M-CURSOS
-          predicates:
-            - Path=/m-cursos/openapi/**
-          filters:
-            - StripPrefix=1
-
-        # Rutas para ver el panel de Eureka a través del Gateway
+        # Rutas para Eureka Dashboard
         - id: eureka-web
           uri: http://eureka-server:8761
           predicates:
