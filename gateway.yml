@@ -76,3 +76,8 @@ spring:
           uri: http://eureka-server:8761
           predicates:
             - Path=/eureka/**
+
+       - id: m-modulos
+          uri: lb://M-CURSOS
+          predicates:
+            - Path=/modulos/**
