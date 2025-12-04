@@ -77,7 +77,7 @@ spring:
           predicates:
             - Path=/eureka/**
 
-       - id: m-modulos
+        - id: m-modulos
           uri: lb://M-CURSOS
           predicates:
             - Path=/modulos/**
