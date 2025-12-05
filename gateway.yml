@@ -27,7 +27,7 @@ spring:
             provider: keycloak
             client-id: gateway-client
             # Tu secreto actual
-            client-secret: mmvbH3SUYERNi8GWd04QwieL4GHIPZLB
+            client-secret: lpGFQz5yHVBT2YvobWhwHSDeGP38hFl2
             # ESTA LÍNEA ES LA MAGIA PARA QUE NO DE "INVALID CREDENTIALS":
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
