@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres_cursos:5432/Curso-db
     username: postgres
-    password: 1234
+    password: gatito71              # <-- aquí tu contraseña
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -25,20 +25,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          # 1. VALIDACIÓN: El token dirá que viene de "localhost" (porque te logueaste en el navegador)
           issuer-uri: http://localhost:8080/realms/DemoUCB
-          
-          # 2. CONEXIÓN: Pero Docker debe buscar las llaves en "keycloak" internamente
           jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
 
-# Configuración Swagger
 springdoc:
   swagger-ui:
     path: /openapi/swagger-ui.html
   api-docs:
     path: /openapi/v3/api-docs
 
-# Conexión a Eureka
 eureka:
   client:
     serviceUrl:
