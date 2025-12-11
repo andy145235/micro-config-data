@@ -2,32 +2,34 @@ server:
   port: 8082
 
 spring:
+  main:
+    web-application-type: reactive   # si tu app es WebFlux
+
   application:
     name: ms-res
-  
-  # Conexión a la Base de Datos (MISMA BD que m-cursos)
+
   datasource:
     url: jdbc:postgresql://postgres_cursos:5432/Curso-db
     username: postgres
-    password: gatito71          # misma contraseña que usas en docker-compose
+    password: gatito71
     driver-class-name: org.postgresql.Driver
-  
+
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
 
-  # Seguridad (Resource Server con Keycloak)
   security:
     oauth2:
       resourceserver:
         jwt:
-          # Issuer externo (lo que ve el navegador)
+          # Lo que ve el navegador
           issuer-uri: http://localhost:8080/realms/DemoUCB
-          # JWK interno (lo que usa el contenedor dentro de Docker)
+          # Lo que ve Docker internamente
           jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
 
 springdoc:
@@ -38,7 +40,7 @@ springdoc:
 
 eureka:
   client:
-    serviceUrl:
+    service-url:
       defaultZone: http://eureka-server:8761/eureka/
   instance:
     prefer-ip-address: true
