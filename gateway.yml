@@ -8,11 +8,11 @@ spring:
   security:
     oauth2:
       resourceserver:
-          jwt:
-            # 1. URL para validar la firma (coincide con el token de Angular)
-            issuer-uri: http://localhost:8080/realms/DemoUCB
+        jwt:
+          # 1. URL para validar la firma (coincide con el token de Angular)
+          issuer-uri: http://localhost:8080/realms/DemoUCB
           # 2. URL interna para que Docker busque las llaves
-            jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
+          jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
       client:
         provider:
           keycloak:
@@ -26,9 +26,7 @@ spring:
           gateway-client:
             provider: keycloak
             client-id: gateway-client
-            # Tu secreto actual
             client-secret: lpGFQz5yHVBT2YvobWhwHSDeGP38hFl2
-            # ESTA LÍNEA ES LA MAGIA PARA QUE NO DE "INVALID CREDENTIALS":
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
@@ -55,7 +53,7 @@ spring:
           filters:
             - StripPrefix=1
             
-        # Ruta para MS-RES
+        # Ruta para MS-RES (API de reseñas)
         - id: ms-res
           uri: lb://MS-RES
           predicates:
@@ -63,7 +61,7 @@ spring:
           filters:
             - StripPrefix=1
 
-        # Ruta para MS-RES Swagger
+        # Ruta para MS-RES Swagger (usa paths por defecto de springdoc)
         - id: ms-res-swagger
           uri: lb://MS-RES
           predicates:
@@ -77,6 +75,7 @@ spring:
           predicates:
             - Path=/eureka/**
 
+        # Ruta extra para módulos (m-cursos)
         - id: m-modulos
           uri: lb://M-CURSOS
           predicates:

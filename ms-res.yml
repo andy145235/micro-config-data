@@ -1,0 +1,44 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ms-res
+  
+  # Conexión a la Base de Datos (MISMA BD que m-cursos)
+  datasource:
+    url: jdbc:postgresql://postgres_cursos:5432/Curso-db
+    username: postgres
+    password: gatito71          # misma contraseña que usas en docker-compose
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  # Seguridad (Resource Server con Keycloak)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Issuer externo (lo que ve el navegador)
+          issuer-uri: http://localhost:8080/realms/DemoUCB
+          # JWK interno (lo que usa el contenedor dentro de Docker)
+          jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
+
+springdoc:
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+  api-docs:
+    path: /openapi/v3/api-docs
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
