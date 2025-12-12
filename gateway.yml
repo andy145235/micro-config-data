@@ -4,24 +4,22 @@ server:
 spring:
   application:
     name: gateway
-  
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          # 1. URL para validar la firma (coincide con el token de Angular)
           issuer-uri: http://localhost:8080/realms/DemoUCB
-          # 2. URL interna para que Docker busque las llaves
           jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
+
       client:
         provider:
           keycloak:
-            # URL para que tu NAVEGADOR te redirija al login
             authorization-uri: http://localhost:8080/realms/DemoUCB/protocol/openid-connect/auth
-            # URLs para que DOCKER se comunique internamente
             token-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/token
             jwk-set-uri: http://keycloak:8080/realms/DemoUCB/protocol/openid-connect/certs
             user-name-attribute: preferred_username
+
         registration:
           gateway-client:
             provider: keycloak
@@ -34,34 +32,49 @@ spring:
 
   cloud:
     gateway:
+
+      # ✅ CORS GLOBAL (ESTO ES LO QUE FALTABA)
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - Authorization
+              - Content-Type
+            allowCredentials: true
+
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+
       routes:
-        # Ruta para M-CURSOS
+        # ===== M-CURSOS =====
         - id: m-cursos
           uri: lb://M-CURSOS
           predicates:
             - Path=/cursos/**
-        
-        # Ruta para M-CURSOS Swagger
+
         - id: m-cursos-swagger
           uri: lb://M-CURSOS
           predicates:
             - Path=/m-cursos/openapi/**
           filters:
             - StripPrefix=1
-            
-        # ---- RUTA PRINCIPAL A MS-RES ----
+
+        # ===== MS-RES (RESEÑAS) =====
         - id: ms-res
-          uri: lb://ms-res
+          uri: lb://MS-RES
           predicates:
             - Path=/reviews/**
-          #filters:
-          #  - StripPrefix=1
 
-        # Ruta para MS-RES Swagger (usa paths por defecto de springdoc)
         - id: ms-res-swagger
           uri: lb://MS-RES
           predicates:
@@ -69,13 +82,13 @@ spring:
           filters:
             - StripPrefix=1
 
-        # Rutas para Eureka Dashboard
+        # ===== EUREKA =====
         - id: eureka-web
           uri: http://eureka-server:8761
           predicates:
             - Path=/eureka/**
 
-        # Ruta extra para módulos (m-cursos)
+        # ===== MODULOS =====
         - id: m-modulos
           uri: lb://M-CURSOS
           predicates:
