@@ -53,9 +53,9 @@ spring:
           filters:
             - StripPrefix=1
             
-        # Ruta para MS-RES (API de reseñas)
+        # ---- RUTA PRINCIPAL A MS-RES ----
         - id: ms-res
-          uri: lb://MS-RES
+          uri: lb://ms-res
           predicates:
             - Path=/reviews/**
           #filters:
