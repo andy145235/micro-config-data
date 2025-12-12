@@ -58,8 +58,8 @@ spring:
           uri: lb://MS-RES
           predicates:
             - Path=/reviews/**
-          filters:
-            - StripPrefix=1
+          #filters:
+          #  - StripPrefix=1
 
         # Ruta para MS-RES Swagger (usa paths por defecto de springdoc)
         - id: ms-res-swagger
