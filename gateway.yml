@@ -71,7 +71,7 @@ spring:
 
         # ===== MS-RES (RESEÑAS) =====
         - id: ms-res
-          uri: lb://MS-RES
+          uri: lb://ms-res
           predicates:
             - Path=/reviews/**
 
